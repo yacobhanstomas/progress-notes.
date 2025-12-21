@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quran Memorisation Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+
+    div.container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      text-decoration: underline;
+      text-decoration-color: #0015FF;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      padding: 8px;
+      margin: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 200px;
+      height: 50px;
+      margin: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 10px;
+      background-color: #0015FF;
+      color: white;
+      cursor: pointer;
+      border: none;
+      text-shadow: 1px 1px #3C3C41;
+    }
+
+    button:hover {
+      background-color: #2B3DFF;
+      box-shadow: 2px 2px 10px #0015FF;
+    }
+
+    table {
+      width: 80%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 2px solid #0015FF;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Fortschritts-Tracker</h1>
+
+  <input type="text" id="versInput" placeholder="Neuer Vers">
+  <input type="text" id="notizInput" placeholder="Notiz">
+
+  <button onclick="addRow()">Zeile hinzufügen</button>
+  <button onclick="removeRow()">Letzte Zeile entfernen</button>
+
+  <table id="table">
+    <tr>
+      <th>Vers</th>
+      <th>Notiz</th>
+      <th>Datum</th>
+    </tr>
+  </table>
+</div>
+
+<script>
+  const table = document.getElementById('table');
+  const versInput = document.getElementById('versInput');
+  const notizInput = document.getElementById('notizInput');
+
+  // Beim Laden gespeicherte Daten wiederherstellen
+  document.addEventListener('DOMContentLoaded', function() {
+    const savedData = localStorage.getItem('quranTableData');
+    if (savedData) {
+      table.innerHTML = savedData;
+    }
+  });
+
+  // Neue Zeile hinzufügen
+  function addRow() {
+    const vers = versInput.value.trim();
+    const notiz = notizInput.value.trim();
+    if (!vers) {
+      alert("Bitte einen Vers eingeben!");
+      return;
+    }
+
+    const date = new Date();
+    const formattedDate = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()}`;
+
+    const row = table.insertRow(-1);
+    row.insertCell(0).textContent = vers;
+    row.insertCell(1).textContent = notiz;
+    row.insertCell(2).textContent = formattedDate;
+    localStorage.setItem('quranTableData', table.innerHTML);
+    versInput.value = '';
+    notizInput.value = '';
+  }
+
+  function removeRow() {
+    if (table.rows.length > 1) {
+      table.deleteRow(-1);
+      localStorage.setItem('quranTableData', table.innerHTML);
+       }
+  }
+</script>
+
+</body>
+</html>
